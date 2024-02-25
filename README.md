@@ -1,4 +1,4 @@
-# FLAMELINGS-FRONTEND
+# FLAMESTARTERS-FRONTEND
 
 ![Version](https://img.shields.io/badge/version-1.0.0-blue.svg?style=for-the-badge)
 ![Node](https://img.shields.io/badge/node-v20.10.0-blue.svg?style=for-the-badge)
@@ -40,7 +40,7 @@
 
 <!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
 
-This repository contains the code for the frontend of a minting dApp for a NFT collection consisting of 1000 unique AI-generated images known as "Flamelings." These flame creatures come with five different traits of varying rarity: WHITE (790), BLUE (100), YELLOW (80), RED (20), and NOVA (10).
+This repository contains the code for the frontend of a minting dApp for a collection of 177 unique AI-generated and human-curated pieces designed to ignite the EARNer in you! Collect rare characters like flintstone from the earliest days of mankind, or mint a bougie designer lighter. Hidden within the collection are seven legendary pieces that stand apart from all others.
 
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
@@ -108,7 +108,7 @@ Distributed under the MIT License. See `LICENSE` for more information.
 
 Nadina Oates - [@N0_crypto](https://twitter.com/N0_crypto)
 
-Main Repository: [https://github.com/trashpirate/flamelings](https://github.com/trashpirate/flamelings)
+Main Repository: [https://github.com/trashpirate/flamestarters](https://github.com/trashpirate/flamestarters)
 
 Project Link: [https://flame.buyholdearn.com/](https://flame.buyholdearn.com/)
 
