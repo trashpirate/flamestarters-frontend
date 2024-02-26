@@ -137,11 +137,11 @@ export default function AccountInfo({}: Props) {
           />
         </div>
 
-        <div className="flex justify-between">
+        <div className="flex justify-between text-secondary">
           <h3>Balance: </h3>
           <p>{getBalanceString()}</p>
         </div>
-        <div className="flex justify-between">
+        <div className="flex justify-between text-secondary">
           <h3>NFTs: </h3>
           <p>{getNftBalanceString()}</p>
         </div>

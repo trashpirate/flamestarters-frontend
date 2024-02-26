@@ -39,7 +39,7 @@ export default function CollectionInfo({}: Props) {
     if (isLoading) {
       text = "Loading...";
     } else if (isSuccess && totalSupply != undefined) {
-      text = `${ (totalSupply - 1).toLocaleString() }`;
+      text = `${ (totalSupply).toLocaleString() }`;
     } else {
       text = "---";
     }
@@ -51,7 +51,7 @@ export default function CollectionInfo({}: Props) {
     if (isLoading) {
       text = "Loading...";
     } else if (isSuccess && totalSupply != undefined) {
-      text = `${ (1000 - totalSupply).toLocaleString() }`;
+      text = `${ (177 - totalSupply).toLocaleString() }`;
     } else {
       text = "---";
     }
@@ -64,6 +64,7 @@ export default function CollectionInfo({}: Props) {
         <h2 className="mb-4 border-b-2 border-primary pb-2 text-xl uppercase text-primary">
           {COLLECTION_NAME}
         </h2>
+
         <div className="py-4 text-sm text-secondary">
           <p>Contract:</p>
 
@@ -106,8 +107,8 @@ export default function CollectionInfo({}: Props) {
           </table>
         </div>
         <div className="flex justify-between w-48 text-secondary">
-          <h3>Last NFT minted: </h3>
-          <p>#{getTotalSupplyString()}</p>
+          <h3>NFTs minted: </h3>
+          <p>{getTotalSupplyString()}</p>
         </div>
         <div className="flex justify-between w-48 text-secondary">
           <h3>NFTs remaining: </h3>

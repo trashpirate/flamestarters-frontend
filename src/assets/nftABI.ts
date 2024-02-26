@@ -14,27 +14,43 @@ export const nftABI = [
   { inputs: [], name: "BalanceQueryForZeroAddress", type: "error" },
   {
     inputs: [],
-    name: "Flamelings_BatchLimitExceedsMaxPerWallet",
+    name: "FlameStarters_BatchLimitExceedsMaxPerWallet",
     type: "error",
   },
-  { inputs: [], name: "Flamelings_BatchLimitTooHigh", type: "error" },
-  { inputs: [], name: "Flamelings_ExceedsBatchLimit", type: "error" },
-  { inputs: [], name: "Flamelings_ExceedsMaxPerWallet", type: "error" },
-  { inputs: [], name: "Flamelings_ExceedsMaxSupply", type: "error" },
-  { inputs: [], name: "Flamelings_FeeAddressIsZeroAddress", type: "error" },
-  { inputs: [], name: "Flamelings_InsufficientBalance", type: "error" },
-  { inputs: [], name: "Flamelings_InsufficientMintQuantity", type: "error" },
+  { inputs: [], name: "FlameStarters_BatchLimitTooHigh", type: "error" },
+  { inputs: [], name: "FlameStarters_EthTransferFailed", type: "error" },
+  { inputs: [], name: "FlameStarters_ExceedsBatchLimit", type: "error" },
+  { inputs: [], name: "FlameStarters_ExceedsMaxPerWallet", type: "error" },
+  { inputs: [], name: "FlameStarters_ExceedsMaxSupply", type: "error" },
+  { inputs: [], name: "FlameStarters_FeeAddressIsZeroAddress", type: "error" },
+  {
+    inputs: [
+      { internalType: "uint256", name: "value", type: "uint256" },
+      { internalType: "uint256", name: "fee", type: "uint256" },
+    ],
+    name: "FlameStarters_InsufficientEthFee",
+    type: "error",
+  },
+  { inputs: [], name: "FlameStarters_InsufficientMintQuantity", type: "error" },
+  { inputs: [], name: "FlameStarters_InsufficientTokenBalance", type: "error" },
   {
     inputs: [],
-    name: "Flamelings_MaxPerWalletExceedsMaxSupply",
+    name: "FlameStarters_MaxPerWalletExceedsMaxSupply",
     type: "error",
   },
   {
     inputs: [],
-    name: "Flamelings_MaxPerWalletSmallerThanBatchLimit",
+    name: "FlameStarters_MaxPerWalletSmallerThanBatchLimit",
     type: "error",
   },
-  { inputs: [], name: "Flamelings_TokenTransferFailed", type: "error" },
+  { inputs: [], name: "FlameStarters_NoBaseURI", type: "error" },
+  {
+    inputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    name: "FlameStarters_NonexistentToken",
+    type: "error",
+  },
+  { inputs: [], name: "FlameStarters_TokenTransferFailed", type: "error" },
+  { inputs: [], name: "FlameStarters_TokenUriError", type: "error" },
   { inputs: [], name: "MintERC2309QuantityExceedsLimit", type: "error" },
   { inputs: [], name: "MintToZeroAddress", type: "error" },
   { inputs: [], name: "MintZeroQuantity", type: "error" },
@@ -50,6 +66,7 @@ export const nftABI = [
   },
   { inputs: [], name: "OwnerQueryForNonexistentToken", type: "error" },
   { inputs: [], name: "OwnershipNotInitializedForExtraData", type: "error" },
+  { inputs: [], name: "ReentrancyGuardReentrantCall", type: "error" },
   { inputs: [], name: "TransferCallerNotOwnerNorApproved", type: "error" },
   { inputs: [], name: "TransferFromIncorrectOwner", type: "error" },
   { inputs: [], name: "TransferToNonERC721ReceiverImplementer", type: "error" },
@@ -126,6 +143,19 @@ export const nftABI = [
     inputs: [
       {
         indexed: true,
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "MetadataUpdate",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
         internalType: "address",
         name: "previousOwner",
         type: "address",
@@ -170,7 +200,7 @@ export const nftABI = [
       },
       { indexed: false, internalType: "uint256", name: "fee", type: "uint256" },
     ],
-    name: "SetFee",
+    name: "SetEthFee",
     type: "event",
   },
   {
@@ -190,6 +220,20 @@ export const nftABI = [
       },
     ],
     name: "SetMaxPerWallet",
+    type: "event",
+  },
+  {
+    anonymous: false,
+    inputs: [
+      {
+        indexed: true,
+        internalType: "address",
+        name: "sender",
+        type: "address",
+      },
+      { indexed: false, internalType: "uint256", name: "fee", type: "uint256" },
+    ],
+    name: "SetTokenFee",
     type: "event",
   },
   {
@@ -226,8 +270,22 @@ export const nftABI = [
   },
   {
     inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
+    name: "burn",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "tokenId", type: "uint256" }],
     name: "getApproved",
     outputs: [{ internalType: "address", name: "", type: "address" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [],
+    name: "getBaseUri",
+    outputs: [{ internalType: "string", name: "", type: "string" }],
     stateMutability: "view",
     type: "function",
   },
@@ -240,7 +298,7 @@ export const nftABI = [
   },
   {
     inputs: [],
-    name: "getFee",
+    name: "getEthFee",
     outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
     stateMutability: "view",
     type: "function",
@@ -274,6 +332,13 @@ export const nftABI = [
     type: "function",
   },
   {
+    inputs: [],
+    name: "getTokenFee",
+    outputs: [{ internalType: "uint256", name: "", type: "uint256" }],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
     inputs: [
       { internalType: "address", name: "owner", type: "address" },
       { internalType: "address", name: "operator", type: "address" },
@@ -287,7 +352,7 @@ export const nftABI = [
     inputs: [{ internalType: "uint256", name: "quantity", type: "uint256" }],
     name: "mint",
     outputs: [],
-    stateMutability: "nonpayable",
+    stateMutability: "payable",
     type: "function",
   },
   {
@@ -360,7 +425,7 @@ export const nftABI = [
   },
   {
     inputs: [{ internalType: "uint256", name: "fee", type: "uint256" }],
-    name: "setFee",
+    name: "setEthFee",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -377,6 +442,13 @@ export const nftABI = [
       { internalType: "uint256", name: "maxPerWallet", type: "uint256" },
     ],
     name: "setMaxPerWallet",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [{ internalType: "uint256", name: "fee", type: "uint256" }],
+    name: "setTokenFee",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",
@@ -437,4 +509,5 @@ export const nftABI = [
     stateMutability: "nonpayable",
     type: "function",
   },
+  { stateMutability: "payable", type: "receive" },
 ] as const;

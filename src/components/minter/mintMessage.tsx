@@ -12,10 +12,10 @@ export default function MintMessage({
   isApprovalLoading,
 }: Props) {
   let message: string;
-  if (!isMintLoading && isMintSuccess) message = "Your Flamelings are born!";
+  if (!isMintLoading && isMintSuccess) message = "Your FlameStarters are minted!";
   else if (isApprovalLoading) message = "Approving your funds...";
-  else if (isMintLoading) message = "Birthing your Flameling...";
-  else message = "Mint an NFT and EARN!";
+  else if (isMintLoading) message = "Minting your FlameStarter...";
+  else message = "Mint and get lit!";
 
   return (
     <div className="flex h-14 justify-center">

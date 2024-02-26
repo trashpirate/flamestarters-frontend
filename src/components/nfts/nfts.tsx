@@ -90,40 +90,40 @@ export default function Nfts({}: Props) {
   }, [data, isSuccess]);
 
   async function getNFT() {
-    console.log("fetching");
+    // console.log("fetching");
     const owner = address as string;
     const options = {
       contractAddresses: [NFT_CONTRACT],
     };
     const nfts = await alchemy.nft.getNftsForOwner(owner, options);
-    console.log(nfts);
+    // console.log(nfts);
     let nftArray: NFTMeta[] = [];
-    const maxShow = maxPerWallet != undefined && maxPerWallet <= 10 ? maxPerWallet : 10;
+    const maxShow = maxPerWallet != undefined && maxPerWallet <= 5 ? maxPerWallet : 5;
     for (let index = 1; index <= maxShow; index++) {
       const nft = nfts["ownedNfts"].at(-index);
       if (nft != undefined) {
-        let imageURL: string = "/unrevealed_2.jpg";
+        let imageURL: string = "/unrevealed.jpg";
 
         const res = await fetch(
-          `https://bafybeic2a7jdsztni6jsnq2oarb3o5g7iuya5r4lcjfqi64rsucirdfobm.ipfs.nftstorage.link/${ nft.tokenId }`,
+          `https://bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4.ipfs.nftstorage.link/${ nft.tokenId }`,
         );
         const json = await res.json();
-        const [prefix, separator, url, color, name] = json.image.split("/");
-        imageURL = `https://bafybeiaf6ppnztlf3k5edqrgq3zae5ih2y6vhf255hekkqn6vjwazhq36q.ipfs.nftstorage.link/${ color }/${ name }`;
-        console.log(nft);
+        const [prefix, separator, url, trait, name] = json.image.split("/");
+        imageURL = `https://bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy.ipfs.nftstorage.link/${ trait }/${ name }`;
+        // console.log(nft);
         let iNft: NFTMeta = {
           name: nft["contract"].name
             ? `${ nft["contract"].name }  #${ nft.tokenId }`
-            : "Flameling #?",
+            : "FlameStarter #?",
           id: Number(nft.tokenId),
           path: imageURL,
         };
         nftArray.push(iNft);
       } else {
         let iNft: NFTMeta = {
-          name: "Flameling #?",
+          name: "FlameStarter #?",
           id: index + 1100,
-          path: "/unrevealed_2.jpg",
+          path: "/unrevealed.jpg",
         };
         nftArray.push(iNft);
       }
@@ -139,17 +139,17 @@ export default function Nfts({}: Props) {
   }, [isConnected, nftBalance]);
 
   return (
-    <div className="h-full w-full pb-8">
-      <div className="mx-auto h-full max-w-sm rounded-md bg-black p-8 sm:w-full md:max-w-none">
-        <h2 className="border-b-2 border-primary pb-2 text-justify text-xl uppercase">
-          {`Your recently minted NFTs (Max. ${ maxPerWallet })`}
+    <div className="mx-auto h-full w-full rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
+      <div className="mx-auto h-full max-w-sm rounded-md bg-black p-8 md:max-w-none">
+        <h2 className="border-b-2 border-primary text-justify text-xl uppercase">
+          {`Your NFTs (Max. ${ maxPerWallet })`}
         </h2>
         <div className="my-4 min-h-max">
           <div className="grid grid-cols-2 place-content-center gap-4 sm:grid-cols-3 md:grid-cols-5 ">
             {nftsOwned != undefined &&
               nftsOwned.map(function (nft) {
                 let hover: string = "";
-                if (nft.id <= 1000) hover = "  hover:border-primary";
+                if (nft.id <= 1000) hover = "  hover:border-secondary";
                 return (
                   <Link
                     key={nft.id}
@@ -157,7 +157,7 @@ export default function Nfts({}: Props) {
                   >
                     <div
                       className={
-                        "my-2 overflow-hidden rounded-md border-2 border-white bg-white shadow" +
+                        "overflow-hidden rounded-md border-2 border-primary bg-white shadow" +
                         hover
                       }
                     >
@@ -174,7 +174,7 @@ export default function Nfts({}: Props) {
                         />
                       }
                       <div className="m-2 text-center text-xs font-bold text-black">
-                        {nft.name}
+                        #{nft.id <= 1000 ? nft.id : "?"}
                       </div>
                     </div>
                   </Link>

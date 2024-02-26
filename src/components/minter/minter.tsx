@@ -3,7 +3,7 @@ import {nftABI} from "@/assets/nftABI";
 import {tokenABI} from "@/assets/tokenABI";
 import React, {useEffect, useState} from "react";
 
-import {parseUnits} from "viem";
+import {parseEther, parseUnits} from "viem";
 import {
   useAccount,
   useContractReads,
@@ -21,7 +21,7 @@ import PopUp from "./popUp";
 
 const NFT_CONTRACT = process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${ string }`;
 const TOKEN_CONTRACT = process.env.NEXT_PUBLIC_TOKEN_CONTRACT as `0x${ string }`;
-const NFT_FEE = 100000;
+const NFT_FEE = Number(process.env.NEXT_PUBLIC_MINT_FEE);
 
 type Props = {};
 
@@ -179,6 +179,7 @@ export default function Minter({}: Props) {
   const {config: mintConfig} = usePrepareContractWrite({
     ...nftContract,
     functionName: "mint",
+    value: parseEther("0.1"),
     args: [BigInt(quantity)],
     enabled: readyToMint === true && isConnected,
   });
@@ -371,16 +372,17 @@ export default function Minter({}: Props) {
                 mint={mint}
                 openPopUp={openModal}
                 closePopUp={closeModal}
+                disconnected={isDisconnected === true}
               ></MintButton>
             </div>
           </div>
         ) : (
           <div className="flex-col justify-center gap-4 text-center">
-            <p className="my-8">MINT IS LIVE!</p>
+            <p className="my-8 text-primary">MINT STARTS ON FEB 27th!</p>
             <div className="mx-auto my-2 flex h-12 w-fit rounded-xl border-2 border-black bg-primary px-4 align-middle font-bold text-black hover:border-primary hover:bg-hover">
               <a
                 className="m-auto"
-                href="https://app.uniswap.org/swap?outputCurrency=0x0b61C4f33BCdEF83359ab97673Cb5961c6435F4E"
+                href={`https://pancakeswap.finance/swap?chain=bsc&outputCurrency=${ process.env.NEXT_PUBLIC_TOKEN_CONTRACT }`}
                 target={"_blank"}
               >
                 <p>{`BUY $${ process.env.NEXT_PUBLIC_TOKEN_SYMBOL }`}</p>

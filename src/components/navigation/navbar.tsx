@@ -25,19 +25,19 @@ export default function Navbar({}: Props) {
       <div className="my-auto h-fit w-fit flex-row rounded-xl border-2 border-black bg-button font-bold text-black hover:bg-buttonHover sm:w-44 sm:justify-between">
         <a
           className="pointer-events-auto mx-auto flex h-10 items-center align-middle text-lg uppercase sm:gap-1 sm:text-center lg:p-0 "
-          href="https://opensea.io/collection/flamelings"
+          href="https://www.rareboard.com/"
           rel="noopener noreferrer"
         >
           <Image
-            src="/opensea.png"
+            src="/rareboard.jpg"
             alt="Opeansea logo"
-            className="mx-1 h-8 w-auto overflow-hidden rounded-xl"
+            className="mx-1 h-8 w-auto overflow-hidden rounded-full"
             width={40}
             height={40}
             priority
           />
-          <div className="w-0 scale-0 justify-self-center sm:ml-2 sm:w-fit sm:scale-100">
-            OPENSEA
+          <div className="w-0 scale-0 justify-self-center sm:w-fit sm:scale-100">
+            RAREBOARD
           </div>
         </a>
       </div>
@@ -45,7 +45,7 @@ export default function Navbar({}: Props) {
       <div className="my-auto h-fit w-fit flex-row rounded-xl border-2 border-black bg-button font-bold text-black hover:bg-buttonHover sm:w-44 sm:justify-between">
         <a
           className="pointer-events-auto mx-auto flex h-10 items-center align-middle text-lg uppercase sm:gap-1 sm:text-center lg:p-0 "
-          href="https://app.uniswap.org/swap?outputCurrency=0x0b61C4f33BCdEF83359ab97673Cb5961c6435F4E"
+          href={`https://pancakeswap.finance/swap?chain=bsc&outputCurrency=${ process.env.NEXT_PUBLIC_TOKEN_CONTRACT }`}
           rel="noopener noreferrer"
         >
           <Image

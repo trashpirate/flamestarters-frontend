@@ -1,7 +1,7 @@
-import React, { Fragment, useEffect, useState } from "react";
-import { Dialog, Transition } from "@headlessui/react";
+import React, {Fragment, useEffect, useState} from "react";
+import {Dialog, Transition} from "@headlessui/react";
 import PopUpButton from "./popUpButton";
-import { ClipLoader } from "react-spinners";
+import {ClipLoader} from "react-spinners";
 
 const NFT_FEE = Number(process.env.NEXT_PUBLIC_MINT_FEE);
 
@@ -32,23 +32,21 @@ export default function PopUp({
       if (isMinting) {
         return "Minting...";
       } else {
-        return `Confirm transaction in your wallet to birth ${
-          quantity == "1" ? "1 cute Flameling!" : `${quantity} cute Flamelings!`
-        }`;
+        return `Confirm transaction in your wallet to birth ${ quantity == "1" ? "1 cute FlameStarter!" : `${ quantity } cute FlameStarters!`
+          }`;
       }
     } else {
       if (isApproving) {
         return `Approving...`;
       } else {
-        return `Approve ${(Number(quantity) * NFT_FEE).toLocaleString(
+        return `Approve ${ (Number(quantity) * NFT_FEE).toLocaleString(
           undefined,
           {
             minimumFractionDigits: 0,
             maximumFractionDigits: 0,
           },
-        )} ${process.env.NEXT_PUBLIC_TOKEN_SYMBOL} in your wallet to mint ${
-          quantity == "1" ? "1 Flameling." : `${quantity} Flamelings.`
-        }`;
+        ) } ${ process.env.NEXT_PUBLIC_TOKEN_SYMBOL } in your wallet to mint ${ quantity == "1" ? "1 FlameStarter." : `${ quantity } FlameStarters.`
+          }`;
       }
     }
   }
@@ -87,7 +85,7 @@ export default function PopUp({
                   >
                     {readyToMint
                       ? `Confirm NFT Mint`
-                      : `Approve ${process.env.NEXT_PUBLIC_TOKEN_SYMBOL}`}
+                      : `Approve ${ process.env.NEXT_PUBLIC_TOKEN_SYMBOL }`}
                   </Dialog.Title>
                   <div className="mt-2">
                     <p className="text-sm text-gray-500">{getDialogText()}</p>

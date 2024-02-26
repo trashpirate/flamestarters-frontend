@@ -15,7 +15,7 @@ export default function MintInputPanel({
     <div className="my-4 justify-center text-center  text-primary">
       <form>
         <label>
-          Enter number of NFTs:
+          Enter Number of NFTs:
           <input
             className="mx-auto ml-3 rounded bg-inputBackground p-1 text-center"
             type="number"

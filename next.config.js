@@ -9,7 +9,7 @@ const nextConfig = {
   },
   images: {
     domains: [
-      "bafybeiaf6ppnztlf3k5edqrgq3zae5ih2y6vhf255hekkqn6vjwazhq36q.ipfs.nftstorage.link",
+      "bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy.ipfs.nftstorage.link",
       "https://flame.buyholdearn.com",
     ],
   },

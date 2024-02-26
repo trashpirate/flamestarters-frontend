@@ -10,6 +10,7 @@ type Props = {
   mint: any;
   openPopUp: any;
   closePopUp: any;
+  disconnected: boolean;
 };
 
 export default function MintButton({
@@ -22,14 +23,23 @@ export default function MintButton({
   mint,
   openPopUp,
   closePopUp,
+  disconnected
 }: Props) {
-  let buttonText: string;
-  //   console.log(readyToMint);
-  //   console.log(buttonEnabled);
-  if (readyToMint) buttonText = "CONFIRM MINT";
-  else buttonText = "MINT";
 
-  if (insufficientFunds) {
+  if (disconnected) {
+    // insufficient balance
+    return (
+      <div>
+        <button
+          className="rounded-xl bg-buttonInactive px-5 py-3 text-buttonInactiveText"
+          disabled={true}
+          onClick={(e) => {}}
+        >
+          Connect Wallet
+        </button>
+      </div>
+    );
+  } else if (insufficientFunds) {
     // insufficient balance
     return (
       <div>
@@ -60,7 +70,7 @@ export default function MintButton({
     return (
       <div>
         <button
-          className="h-12 rounded-xl border-2 border-black bg-primary px-5 py-3 font-bold text-black hover:border-primary hover:bg-secondary"
+          className="h-12 rounded-xl border-2 border-primary bg-white px-5 py-3 font-bold text-black hover:border-primary hover:bg-secondary"
           disabled={!buttonEnabled}
           onClick={(e) => {
             openPopUp();

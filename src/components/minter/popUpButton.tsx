@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useState} from "react";
 
 type Props = {
   readyToMint: boolean | undefined;
@@ -38,7 +38,7 @@ export default function PopUpButton({
   return (
     <div>
       <button
-        className="h-12 rounded-xl border-2 border-black bg-primary px-5 py-3 font-bold text-black hover:border-primary hover:bg-hover"
+        className="h-12 rounded-xl border-2 border-black bg-primary px-5 py-3 font-bold text-black hover:border-primary hover:bg-secondary"
         disabled={!buttonEnabled}
         onClick={(e) => {
           if (!readyToMint) {
