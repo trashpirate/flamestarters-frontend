@@ -32,9 +32,8 @@ export default function Minter({}: Props) {
   // user input states
   const [quantity, setQuantity] = useState<string>("1");
   const [tokenTransferAmount, setTokenTransferAmount] = useState<bigint>(
-    parseUnits(
-      NFT_FEE.toString(),
-      Number(process.env.NEXT_PUBLIC_TOKEN_DECIMALS),
+    parseEther(
+      NFT_FEE.toString()
     ),
   );
   const [ethTransferAmount, setEthTransferAmount] = useState<bigint>(

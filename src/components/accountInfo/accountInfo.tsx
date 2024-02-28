@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {useAccount, useContractRead, useNetwork} from "wagmi";
 
 import {tokenABI} from "@/assets/tokenABI";
-import {formatUnits} from "viem";
+import {formatEther, formatUnits} from "viem";
 import {nftABI} from "@/assets/nftABI";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 
@@ -53,7 +53,7 @@ export default function AccountInfo({}: Props) {
     onSuccess(data: bigint) {
       setTokenBalance(
         Number(
-          formatUnits(data, Number(process.env.NEXT_PUBLIC_TOKEN_DECIMALS)),
+          formatEther(data),
         ),
       );
     },
