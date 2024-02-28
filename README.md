@@ -51,11 +51,11 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 1. Clone the repo
    ```sh
-   git clone https://github.com/trashpirate/flamelings-artwork.git
+   git clone https://github.com/trashpirate/flamestarters-frontend.git
    ```
 2. Navigate to the project directory
    ```sh
-   cd flamelings-artwork
+   cd flamestarters-artwork
    ```
 3. Install NPM packages
    ```sh
@@ -110,7 +110,7 @@ Nadina Oates - [@N0_crypto](https://twitter.com/N0_crypto)
 
 Main Repository: [https://github.com/trashpirate/flamestarters](https://github.com/trashpirate/flamestarters)
 
-Project Link: [https://flame.buyholdearn.com/](https://flame.buyholdearn.com/)
+Project Link: [https://flamestarters.buyholdearn.com/](https://flamestarters.buyholdearn.com/)
 
 
 <!-- ACKNOWLEDGMENTS -->
