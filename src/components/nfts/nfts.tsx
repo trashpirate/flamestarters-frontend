@@ -99,16 +99,18 @@ export default function Nfts({}: Props) {
         args: [BigInt(counter.toString())]
       });
       if (owner == address) {
+        if (counter == 177) counter = 0;
         const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ (counter).toString() }`);
         const json = await res.json();
         const [prefix, separator, url, trait, name] = json.image.split("/");
         const imageURL = `https://ipfs.io/ipfs/bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy/${ trait }/${ name }`;
         let iNft: NFTMeta = {
-          name: `#${ counter.toString() }`,
+          name: `#${ (counter + 1).toString() }`,
           id: counter,
           path: imageURL,
         };
         nftArray.push(iNft);
+        if (counter == 0) counter = 177;
       }
       counter--;
     }
