@@ -3,6 +3,7 @@ import React from "react";
 import AdminPanel from "./adminPanel";
 import {ConnectButton} from "@rainbow-me/rainbowkit";
 
+
 type Props = {};
 
 export default function Admin({}: Props) {
