@@ -19,7 +19,7 @@ export default function About({}: Props) {
           priority
         />
         <div className="text-sm font-thin text-secondary mt-2">
-          <p className="py-2">An OG collection of 177 AI-generated, human-curated themed NFTs. These instruments of fire are not just great to look at, but will earn holders a share of the Fire Pit's asset growth.</p>
+          <p className="py-2">An OG collection of 177 AI-generated, human-curated themed NFTs. These instruments of fire are not just great to look at, but will earn holders a share of the Fire Pit&apos;s asset growth.</p>
           <p className="py-2">Use your NFT to get rewarded in an upcoming exclusive 0x177 staking pool. Earn huge staking bonuses for rare and legendary NFTs.</p>
           <p className="py-2">The FlameStarters are just the beginning of your EARNing journey with 0x177!</p>
 
