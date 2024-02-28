@@ -4,7 +4,7 @@ type Props = {};
 
 export default function About({}: Props) {
   return (
-    <div className="mx-auto h-full w-full max-w-sm sm:max-w-none  rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
+    <div className="mx-auto h-full w-full max-w-sm md:max-w-none  rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
       <div className="h-full mx-auto rounded-md bg-black p-8 ">
 
         <Image

@@ -31,7 +31,7 @@ export default function PopUp({
       if (isMinting) {
         return "Minting...";
       } else {
-        return `Confirm transaction in your wallet to mint ${ quantity == "1" ? "1 cute FlameStarter!" : `${ quantity } cute FlameStarters!`
+        return `Confirm transaction in your wallet to mint ${ quantity == "1" ? "1 cute FlameStarter!" : `${ quantity } awesome FlameStarters!`
           }`;
       }
     } else {

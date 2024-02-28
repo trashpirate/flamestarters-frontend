@@ -58,8 +58,8 @@ export default function CollectionInfo({}: Props) {
   }
 
   return (
-    <div className="mx-auto w-full max-w-sm sm:max-w-none rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3">
-      <div className="mx-auto max-w-sm rounded-md  p-8 bg-black  ">
+    <div className="mx-auto w-full max-w-sm md:max-w-none rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3">
+      <div className="mx-auto rounded-md  p-8 bg-black  ">
         <h2 className="mb-4 border-b-2 border-primary pb-2 text-xl uppercase text-primary">
           {COLLECTION_NAME}
         </h2>

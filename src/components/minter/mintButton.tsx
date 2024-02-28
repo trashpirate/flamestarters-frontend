@@ -4,30 +4,36 @@ type Props = {
   insufficientFunds: boolean;
   maxExceeded: boolean;
   maxPerWallet: number | undefined;
-  readyToMint: boolean | undefined;
   buttonEnabled: boolean;
-  approve: any;
-  mint: any;
   openPopUp: any;
-  closePopUp: any;
   disconnected: boolean;
+  soldOut: boolean;
 };
 
 export default function MintButton({
   insufficientFunds,
   maxExceeded,
   maxPerWallet,
-  readyToMint,
   buttonEnabled,
-  approve,
-  mint,
   openPopUp,
-  closePopUp,
-  disconnected
+  disconnected,
+  soldOut
 }: Props) {
-
-  if (disconnected) {
-    // insufficient balance
+  if (soldOut) {
+    return (
+      <div>
+        <button
+          className="rounded-xl bg-buttonInactive px-5 py-3 text-buttonInactiveText"
+          disabled={true}
+          onClick={(e) => {}}
+        >
+          MINT
+        </button>
+      </div>
+    );
+  }
+  else if (disconnected) {
+    // disconnected
     return (
       <div>
         <button
@@ -65,7 +71,8 @@ export default function MintButton({
         </button>
       </div>
     );
-  } else {
+  }
+  else {
     // approve or mint
     return (
       <div>

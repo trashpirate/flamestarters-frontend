@@ -1,13 +1,18 @@
 "use client";
 import React, {useEffect, useState} from "react";
 import {useAccount, useContractReads, useNetwork} from "wagmi";
+import {readContracts} from '@wagmi/core';
 import {nftABI} from "@/assets/nftABI";
-import Moralis from "moralis";
 import Image from "next/image";
 import Link from "next/link";
 import {toHex} from "viem";
+import {readContract} from "wagmi/actions";
+import getWagmiConfig from "@/app/config";
 
 const NFT_CONTRACT = process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${ string }`;
+const myWagmiConfig = getWagmiConfig(
+  process.env.NEXT_PUBLIC_TESTNET as string,
+);
 
 interface NFTMeta {
   name: string;
@@ -64,50 +69,55 @@ export default function Nfts({}: Props) {
     }
   }, [data, isSuccess]);
 
-  useEffect(() => {
-    async function startMoralis() {
-      if (!Moralis.Core.isStarted) {
-        await Moralis.start({
-          apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
-        });
-      }
-    }
-    startMoralis();
-  }, []);
-
   async function getNFT() {
-    console.log('fetching');
-    const response = await Moralis.EvmApi.nft.getWalletNFTs({
-      chain: "0x61",
-      format: "decimal",
-      limit: 177,
-      tokenAddresses: [NFT_CONTRACT],
-      address: address as string,
-    }).catch(() => {console.log("Moralis API Fetching Error.");});
-    const nfts = response?.result;
+    // console.log('fetching');
+    const result = await readContract({
+      ...nftContract,
+      functionName: 'totalSupply'
+    });
+    const totalSupply = Number(result);
+
+    let numOfNfts: number;
+    if (nftBalance === undefined) {
+      const result = await readContract({
+        ...nftContract,
+        functionName: 'balanceOf',
+        args: [address as `0x${ string }`]
+      });
+      numOfNfts = Number(result);
+    }
+    else {
+      numOfNfts = nftBalance;
+    }
 
     let nftArray: NFTMeta[] = [];
-    for (let index = 1; index <= 5; index++) {
-      const nft = nfts ? nfts.at(index - 1) : undefined;
-
-      if (nft !== undefined) {
-        let imageURL: string = "/unrevealed.jpg";
-        const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ nft.tokenId }`);
+    let counter: number = totalSupply;
+    while (nftArray.length < 5 && counter > 0 && (totalSupply - counter) < numOfNfts) {
+      const owner = await readContract({
+        ...nftContract,
+        functionName: 'ownerOf',
+        args: [BigInt(counter.toString())]
+      });
+      if (owner == address) {
+        const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ (counter - 1).toString() }`);
         const json = await res.json();
         const [prefix, separator, url, trait, name] = json.image.split("/");
-        imageURL = `https://ipfs.io/ipfs/bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy/${ trait }/${ name }`;
+        const imageURL = `https://ipfs.io/ipfs/bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy/${ trait }/${ name }`;
         let iNft: NFTMeta = {
-          name: nft.name
-            ? `#${ nft.tokenId }`
-            : "#?",
-          id: Number(nft.tokenId),
+          name: `#${ counter.toString() }`,
+          id: counter,
           path: imageURL,
         };
         nftArray.push(iNft);
-      } else {
+      }
+      counter--;
+    }
+
+    if (nftArray.length < 5) {
+      for (let i = nftArray.length; i < 5; i++) {
         let iNft: NFTMeta = {
-          name: "#?",
-          id: index + 1100,
+          name: `#?`,
+          id: i + 1000,
           path: "/unrevealed.jpg",
         };
         nftArray.push(iNft);
@@ -118,13 +128,13 @@ export default function Nfts({}: Props) {
   }
 
   useEffect(() => {
-    if (isConnected) {
+    if (isConnected && address !== undefined) {
       getNFT();
     }
-  }, [isConnected, nftBalance]);
+  }, [isConnected, nftBalance, address]);
 
   return (
-    <div className="mx-auto h-full w-full max-w-sm sm:max-w-none rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
+    <div className="mx-auto h-full w-full max-w-sm md:max-w-none rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
       <div className="mx-auto h-full rounded-md bg-black p-8">
         <h2 className="border-b-2 border-primary text-justify text-xl uppercase">
           {`Your NFTs (Max. ${ maxPerWallet })`}
@@ -159,7 +169,7 @@ export default function Nfts({}: Props) {
                         />
                       }
                       <div className="m-2 text-center text-xs font-bold text-black">
-                        #{nft.id <= 1000 ? nft.id : "?"}
+                        {nft.name}
                       </div>
                     </div>
                   </Link>

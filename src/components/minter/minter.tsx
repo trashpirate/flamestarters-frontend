@@ -342,7 +342,7 @@ export default function Minter({}: Props) {
   // display elements
 
   const setMintQuantity = (value: string) => {
-    console.log(readyToMint);
+
     setQuantity(value);
   };
 
@@ -395,6 +395,7 @@ export default function Minter({}: Props) {
                 setMintQuantity={setMintQuantity}
                 getMintQuantity={getMintQuantity}
                 batchLimit={batchLimit}
+                totalSupply={totalSupply}
               ></MintInputPanel>
             </div>
             {/* <div className="mt-2 flex justify-center">{mintButton()}</div> */}
@@ -403,13 +404,10 @@ export default function Minter({}: Props) {
                 insufficientFunds={insufficientFunds}
                 maxExceeded={maxExceeded}
                 maxPerWallet={maxPerWallet}
-                readyToMint={readyToMint}
                 buttonEnabled={isButtonEnabled()}
-                approve={approve}
-                mint={mint}
                 openPopUp={openModal}
-                closePopUp={closeModal}
                 disconnected={(isConnected == undefined || isConnected == false)}
+                soldOut={(totalSupply === 177)}
               ></MintButton>
             </div>
           </div>
