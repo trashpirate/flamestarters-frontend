@@ -30,7 +30,7 @@ export default function Navbar({}: Props) {
         >
           <Image
             src="/rareboard.jpg"
-            alt="Opeansea logo"
+            alt="Rareboard logo"
             className="mx-1 h-8 w-auto overflow-hidden rounded-full"
             width={40}
             height={40}

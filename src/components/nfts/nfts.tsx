@@ -148,7 +148,7 @@ export default function Nfts({}: Props) {
                 return (
                   <Link
                     key={nft.id}
-                    href={`https://opensea.io/assets/ethereum/${ NFT_CONTRACT }/${ nft.id }`}
+                    href={`https://opensea.io/assets/bsc/${ NFT_CONTRACT }/${ nft.id }`}
                   >
                     <div
                       className={
