@@ -4,6 +4,7 @@ import Minter from "@/components/minter/minter";
 import Navbar from "@/components/navigation/navbar";
 import Nfts from "@/components/nfts/nfts";
 import About from "@/components/about/about";
+import Footer from "@/components/footer/footer";
 
 export default function Home() {
   return (
@@ -22,6 +23,7 @@ export default function Home() {
             <About></About>
           </div>
         </div>
+        <Footer></Footer>
       </div>
     </main>
   );
