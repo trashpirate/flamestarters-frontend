@@ -50,7 +50,6 @@ export default function AccountInfo({}: Props) {
     args: [address as `0x${ string }`],
     enabled: isConnected && address != null,
     watch: true,
-    cacheTime: 2000,
     onSuccess(data: bigint) {
       setTokenBalance(
         Number(
@@ -71,7 +70,6 @@ export default function AccountInfo({}: Props) {
     args: [address as `0x${ string }`],
     enabled: isConnected && address != null,
     watch: true,
-    cacheTime: 2000,
     onSuccess(data) {
       setNftBalance(Number(data));
     },
@@ -124,7 +122,7 @@ export default function AccountInfo({}: Props) {
   }
 
   return (
-    <div className="h-full mx-auto w-full rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
+    <div className="h-full mx-auto w-full max-w-sm  rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
       <div className="mx-auto h-full max-w-sm  rounded-md bg-black p-8 md:max-w-none">
         <h2 className="mb-4 border-b-2 border-primary pb-2 text-xl ">
           ACCOUNT INFO
@@ -132,7 +130,6 @@ export default function AccountInfo({}: Props) {
         <div className="mb-4 py-2">
           <ConnectButton
             accountStatus="address"
-            showBalance={true}
             chainStatus="icon"
           />
         </div>

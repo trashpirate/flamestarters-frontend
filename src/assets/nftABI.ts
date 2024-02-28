@@ -66,7 +66,6 @@ export const nftABI = [
   },
   { inputs: [], name: "OwnerQueryForNonexistentToken", type: "error" },
   { inputs: [], name: "OwnershipNotInitializedForExtraData", type: "error" },
-  { inputs: [], name: "ReentrancyGuardReentrantCall", type: "error" },
   { inputs: [], name: "TransferCallerNotOwnerNorApproved", type: "error" },
   { inputs: [], name: "TransferFromIncorrectOwner", type: "error" },
   { inputs: [], name: "TransferToNonERC721ReceiverImplementer", type: "error" },
@@ -136,19 +135,6 @@ export const nftABI = [
       { indexed: true, internalType: "address", name: "to", type: "address" },
     ],
     name: "ConsecutiveTransfer",
-    type: "event",
-  },
-  {
-    anonymous: false,
-    inputs: [
-      {
-        indexed: true,
-        internalType: "uint256",
-        name: "tokenId",
-        type: "uint256",
-      },
-    ],
-    name: "MetadataUpdate",
     type: "event",
   },
   {
@@ -496,6 +482,15 @@ export const nftABI = [
     inputs: [{ internalType: "address", name: "newOwner", type: "address" }],
     name: "transferOwnership",
     outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      { internalType: "address", name: "receiverAddress", type: "address" },
+    ],
+    name: "withdrawETH",
+    outputs: [{ internalType: "bool", name: "success", type: "bool" }],
     stateMutability: "nonpayable",
     type: "function",
   },

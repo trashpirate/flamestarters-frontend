@@ -2,23 +2,12 @@
 import React, {useEffect, useState} from "react";
 import {useAccount, useContractReads, useNetwork} from "wagmi";
 import {nftABI} from "@/assets/nftABI";
-import {tokenABI} from "@/assets/tokenABI";
+import Moralis from "moralis";
 import Image from "next/image";
-import {Alchemy, Network} from "alchemy-sdk";
 import Link from "next/link";
+import {toHex} from "viem";
 
 const NFT_CONTRACT = process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${ string }`;
-const TOKEN_CONTRACT = process.env.NEXT_PUBLIC_TOKEN_CONTRACT as `0x${ string }`;
-
-const config = {
-  apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY,
-  network:
-    process.env.NEXT_PUBLIC_TESTNET == "true"
-      ? Network.ETH_SEPOLIA
-      : Network.ETH_MAINNET,
-};
-
-const alchemy = new Alchemy(config);
 
 interface NFTMeta {
   name: string;
@@ -34,20 +23,12 @@ export default function Nfts({}: Props) {
   );
   const [nftBalance, setNftBalance] = useState<number | undefined>(undefined);
   const [nftsOwned, setNftsOwned] = useState<NFTMeta[] | undefined>(undefined);
-  const [totalSupply, setTotalSupply] = useState<number | undefined>(undefined);
 
   // get account address
   const {address, isConnecting, isDisconnected, isConnected} = useAccount({});
 
   // get chain
   const {chain} = useNetwork();
-
-  // define token contract config
-  const tokenContract = {
-    address: TOKEN_CONTRACT,
-    abi: tokenABI,
-    chainId: chain?.id,
-  };
 
   // define token contract config
   const nftContract = {
@@ -67,14 +48,9 @@ export default function Nfts({}: Props) {
         functionName: "balanceOf",
         args: [address as `0x${ string }`],
       },
-      {
-        ...nftContract,
-        functionName: "totalSupply",
-      },
     ],
     enabled: isConnected && address != null,
     watch: true,
-    cacheOnBlock: true,
   });
 
   useEffect(() => {
@@ -85,43 +61,52 @@ export default function Nfts({}: Props) {
     if (data != undefined) {
       setMaxPerWallet(Number(data[0].result));
       setNftBalance(Number(data[1].result));
-      setTotalSupply(Number(data[2].result));
     }
   }, [data, isSuccess]);
 
-  async function getNFT() {
-    // console.log("fetching");
-    const owner = address as string;
-    const options = {
-      contractAddresses: [NFT_CONTRACT],
-    };
-    const nfts = await alchemy.nft.getNftsForOwner(owner, options);
-    // console.log(nfts);
-    let nftArray: NFTMeta[] = [];
-    const maxShow = maxPerWallet != undefined && maxPerWallet <= 5 ? maxPerWallet : 5;
-    for (let index = 1; index <= maxShow; index++) {
-      const nft = nfts["ownedNfts"].at(-index);
-      if (nft != undefined) {
-        let imageURL: string = "/unrevealed.jpg";
+  useEffect(() => {
+    async function startMoralis() {
+      if (!Moralis.Core.isStarted) {
+        await Moralis.start({
+          apiKey: process.env.NEXT_PUBLIC_MORALIS_API_KEY,
+        });
+      }
+    }
+    startMoralis();
+  }, []);
 
-        const res = await fetch(
-          `https://bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4.ipfs.nftstorage.link/${ nft.tokenId }`,
-        );
+  async function getNFT() {
+    console.log('fetching');
+    const response = await Moralis.EvmApi.nft.getWalletNFTs({
+      chain: "0x61",
+      format: "decimal",
+      limit: 177,
+      tokenAddresses: [NFT_CONTRACT],
+      address: address as string,
+    }).catch(() => {console.log("Moralis API Fetching Error.");});
+    const nfts = response?.result;
+
+    let nftArray: NFTMeta[] = [];
+    for (let index = 1; index <= 5; index++) {
+      const nft = nfts ? nfts.at(index - 1) : undefined;
+
+      if (nft !== undefined) {
+        let imageURL: string = "/unrevealed.jpg";
+        const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ nft.tokenId }`);
         const json = await res.json();
         const [prefix, separator, url, trait, name] = json.image.split("/");
-        imageURL = `https://bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy.ipfs.nftstorage.link/${ trait }/${ name }`;
-        // console.log(nft);
+        imageURL = `https://ipfs.io/ipfs/bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy/${ trait }/${ name }`;
         let iNft: NFTMeta = {
-          name: nft["contract"].name
-            ? `${ nft["contract"].name }  #${ nft.tokenId }`
-            : "FlameStarter #?",
+          name: nft.name
+            ? `#${ nft.tokenId }`
+            : "#?",
           id: Number(nft.tokenId),
           path: imageURL,
         };
         nftArray.push(iNft);
       } else {
         let iNft: NFTMeta = {
-          name: "FlameStarter #?",
+          name: "#?",
           id: index + 1100,
           path: "/unrevealed.jpg",
         };
@@ -139,8 +124,8 @@ export default function Nfts({}: Props) {
   }, [isConnected, nftBalance]);
 
   return (
-    <div className="mx-auto h-full w-full rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
-      <div className="mx-auto h-full max-w-sm rounded-md bg-black p-8 md:max-w-none">
+    <div className="mx-auto h-full w-full max-w-sm sm:max-w-none rounded-md p-1 bg-gradient-to-b from-primary to-secondary my-3 text-primary">
+      <div className="mx-auto h-full rounded-md bg-black p-8">
         <h2 className="border-b-2 border-primary text-justify text-xl uppercase">
           {`Your NFTs (Max. ${ maxPerWallet })`}
         </h2>

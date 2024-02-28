@@ -1,16 +1,18 @@
 import {getDefaultWallets} from "@rainbow-me/rainbowkit";
-import {configureChains, createConfig, WagmiConfig} from "wagmi";
+import {configureChains, createConfig} from "wagmi";
 import {bscTestnet, bsc} from "wagmi/chains";
-import {alchemyProvider} from "wagmi/providers/alchemy";
 import {publicProvider} from "wagmi/providers/public";
+import {jsonRpcProvider} from '@wagmi/core/providers/jsonRpc';
 
 export default function getWagmiConfig(useTest: string) {
   if (useTest == "true") {
     const {chains, publicClient} = configureChains(
       [bscTestnet],
       [
-        alchemyProvider({
-          apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string,
+        jsonRpcProvider({
+          rpc: (chain) => ({
+            http: `${ process.env.NEXT_PUBLIC_RPC_TESTNET }`,
+          }),
         }),
         publicProvider(),
       ],
@@ -33,8 +35,10 @@ export default function getWagmiConfig(useTest: string) {
     const {chains, publicClient} = configureChains(
       [bsc],
       [
-        alchemyProvider({
-          apiKey: process.env.NEXT_PUBLIC_ALCHEMY_API_KEY as string,
+        jsonRpcProvider({
+          rpc: (chain) => ({
+            http: `${ process.env.NEXT_PUBLIC_RPC_MAINNET }`,
+          }),
         }),
         publicProvider(),
       ],

@@ -12,7 +12,7 @@ export default function MintInputPanel({
   batchLimit,
 }: Props) {
   return (
-    <div className="my-4 justify-center text-center  text-primary">
+    <div className="my-4 justify-center text-center  text-secondary">
       <form>
         <label>
           Enter Number of NFTs:

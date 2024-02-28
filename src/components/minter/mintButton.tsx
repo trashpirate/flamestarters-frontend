@@ -48,7 +48,7 @@ export default function MintButton({
           disabled={true}
           onClick={(e) => {}}
         >
-          Insufficient Balance
+          Insufficient Funds
         </button>
       </div>
     );

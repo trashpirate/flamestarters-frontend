@@ -16,7 +16,6 @@ export default function Home() {
             <CollectionInfo></CollectionInfo>
             <AccountInfo></AccountInfo>
           </div>
-
           <Minter></Minter>
           <div className="flex h-full w-full flex-col justify-stretch">
             <Nfts></Nfts>

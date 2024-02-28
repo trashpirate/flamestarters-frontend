@@ -1,6 +1,5 @@
 import React, {Fragment, useEffect, useState} from "react";
 import {Dialog, Transition} from "@headlessui/react";
-import PopUpButton from "./popUpButton";
 import {ClipLoader} from "react-spinners";
 
 const NFT_FEE = Number(process.env.NEXT_PUBLIC_MINT_FEE);
@@ -32,7 +31,7 @@ export default function PopUp({
       if (isMinting) {
         return "Minting...";
       } else {
-        return `Confirm transaction in your wallet to birth ${ quantity == "1" ? "1 cute FlameStarter!" : `${ quantity } cute FlameStarters!`
+        return `Confirm transaction in your wallet to mint ${ quantity == "1" ? "1 cute FlameStarter!" : `${ quantity } cute FlameStarters!`
           }`;
       }
     } else {
@@ -49,6 +48,30 @@ export default function PopUp({
           }`;
       }
     }
+  }
+
+
+  function isButtonEnabled() {
+    if (readyToMint) {
+      if (!mint || isMinting) {
+        return false;
+      } else {
+        return true;
+      }
+    } else {
+      if (!approve || isApproving) {
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+
+  function getButtonText() {
+    if (readyToMint) {
+      return "MINT";
+    }
+    return "APPROVE";
   }
 
   return (
@@ -95,19 +118,27 @@ export default function PopUp({
                     {isApproving || isMinting ? (
                       <ClipLoader color="#FF6B10" />
                     ) : (
-                      <PopUpButton
-                        readyToMint={readyToMint}
-                        approve={approve}
-                        mint={mint}
-                        isMinting={isMinting}
-                        isApproving={isApproving}
-                      ></PopUpButton>
+                      <div>
+                        <button
+                          className="h-12 rounded-xl border-2 border-black bg-primary px-5 py-3 font-bold text-black hover:border-primary hover:bg-secondary"
+                          disabled={!isButtonEnabled()}
+                          onClick={(e) => {
+                            if (!readyToMint) {
+                              approve?.();
+                            } else {
+                              mint?.();
+                            }
+                          }}
+                        >
+                          {getButtonText()}
+                        </button>
+                      </div>
                     )}
                   </div>
                 </Dialog.Panel>
               </Transition.Child>
             </div>
-            s
+
           </div>
         </Dialog>
       </Transition>

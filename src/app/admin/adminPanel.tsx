@@ -1,6 +1,7 @@
 "use client";
-import { nftABI } from "@/assets/nftABI";
-import React, { useState, useEffect } from "react";
+import {nftABI} from "@/assets/nftABI";
+import React, {useState, useEffect} from "react";
+import {formatEther, parseEther} from "viem";
 import {
   useAccount,
   useContractReads,
@@ -15,23 +16,27 @@ type Props = {};
 export default function AdminPanel({}: Props) {
   const [batchLimit, setBatchLimit] = useState<string>("");
   const [maxPerWallet, setMaxPerWallet] = useState<string>("");
-  const [contractOwner, setContractOwner] = useState<`0x${string}`>("0x");
+  const [ethFee, setEthFee] = useState<string>("");
+  const [contractOwner, setContractOwner] = useState<`0x${ string }`>("0x");
   const [actualBatchLimit, setActualBatchLimit] = useState<number | undefined>(
     undefined,
   );
   const [actualMaxPerWallet, setActualMaxPerWallet] = useState<
     number | undefined
   >(undefined);
+  const [actualEthFee, setActualEthFee] = useState<
+    bigint | undefined
+  >(undefined);
 
   // get account address
-  const { address, isConnecting, isDisconnected, isConnected } = useAccount({});
+  const {address, isConnecting, isDisconnected, isConnected} = useAccount({});
 
   // get chain
-  const { chain } = useNetwork();
+  const {chain} = useNetwork();
 
   // define contract config
   const nftContract = {
-    address: process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${string}`,
+    address: process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${ string }`,
     abi: nftABI,
     chainId: chain?.id,
   };
@@ -54,6 +59,10 @@ export default function AdminPanel({}: Props) {
       },
       {
         ...nftContract,
+        functionName: "getEthFee",
+      },
+      {
+        ...nftContract,
         functionName: "owner",
       },
     ],
@@ -61,37 +70,47 @@ export default function AdminPanel({}: Props) {
   });
 
   // set max per wallet
-  const { config: maxPerWalletConfig, error: maxPerWalletError } =
+  const {config: maxPerWalletConfig, error: maxPerWalletError} =
     usePrepareContractWrite({
       ...nftContract,
       functionName: "setMaxPerWallet",
       account: address,
       args: [BigInt(maxPerWallet)],
+      enabled: contractOwner == address
     });
-  const { write: writeMaxPerWallet } = useContractWrite(maxPerWalletConfig);
+  const {write: writeMaxPerWallet} = useContractWrite(maxPerWalletConfig);
 
   // set batch limit
-  const { config: batchLimitConfig, error: batchLimitError } =
+  const {config: batchLimitConfig, error: batchLimitError} =
     usePrepareContractWrite({
       ...nftContract,
       functionName: "setBatchLimit",
       account: address,
       args: [BigInt(batchLimit)],
+      enabled: contractOwner == address
     });
-  const { data: batchData, write: writeBatchLimit } =
+  const {data: batchData, write: writeBatchLimit} =
     useContractWrite(batchLimitConfig);
 
-  const { isLoading: batchLoading, isSuccess: batchSuccess } =
-    useWaitForTransaction({
-      confirmations: 1,
-      hash: batchData?.hash,
+  // set eth fee
+  const {config: ethFeeConfig, error: ethFeeError} =
+    usePrepareContractWrite({
+      ...nftContract,
+      functionName: "setEthFee",
+      account: address,
+      args: [BigInt(parseEther(ethFee))],
+      enabled: contractOwner == address
     });
+
+  const {data: feeData, write: writeEthFee} =
+    useContractWrite(ethFeeConfig);
 
   useEffect(() => {
     if (readLimitData != undefined) {
       setActualMaxPerWallet(Number(readLimitData?.[0].result));
       setActualBatchLimit(Number(readLimitData?.[1].result));
-      setContractOwner(readLimitData?.[2].result as `0x${string}`);
+      setActualEthFee(readLimitData?.[2].result);
+      setContractOwner(readLimitData?.[3].result as `0x${ string }`);
     }
   }, [readLimitData]);
 
@@ -118,6 +137,12 @@ export default function AdminPanel({}: Props) {
             {actualBatchLimit == undefined ? "Loading..." : actualBatchLimit}
           </p>
         </div>
+        <div className="mx-2 mb-4 flex">
+          <h4 className="mr-2">ETH Fee:</h4>
+          <p>
+            {actualEthFee == undefined ? "Loading..." : formatEther(actualEthFee).toString()}
+          </p>
+        </div>
       </div>
       <div className="my-4">
         <form>
@@ -140,7 +165,7 @@ export default function AdminPanel({}: Props) {
           </label>
         </form>
         <button
-          className="my-2 rounded border-2 border-white p-2 hover:cursor-pointer hover:bg-gray-800"
+          className="my-2 rounded border-2 border-white p-2 hover:bg-gray-800"
           disabled={
             !writeMaxPerWallet ||
             (actualBatchLimit != undefined &&
@@ -175,7 +200,7 @@ export default function AdminPanel({}: Props) {
           </label>
         </form>
         <button
-          className="my-2 rounded border-2 border-white p-2 hover:cursor-pointer hover:bg-gray-800"
+          className="my-2 rounded border-2 border-white p-2 hover:bg-gray-800"
           disabled={
             !writeBatchLimit ||
             (actualMaxPerWallet != undefined &&
@@ -186,6 +211,39 @@ export default function AdminPanel({}: Props) {
           }}
         >
           Set Batch Limit
+        </button>
+      </div>
+      <div className="my-4">
+        <form>
+          <label>
+            Enter ETH Fee:
+            <input
+              className="ml-2 w-32 rounded px-2 text-black"
+              type="number"
+              value={ethFee}
+              step="0.0001"
+              min="0"
+              placeholder={
+                actualEthFee != undefined
+                  ? formatEther(actualEthFee).toString()
+                  : "0.01"
+              }
+              onChange={(e) => {
+                setEthFee(e.target.value);
+              }}
+            />
+          </label>
+        </form>
+        <button
+          className="my-2 rounded border-2 border-white p-2 hover:bg-gray-800"
+          disabled={!writeEthFee}
+          onClick={() => {
+            // console.log('he');
+            // console.log();
+            writeEthFee?.();
+          }}
+        >
+          Set ETH Fee
         </button>
       </div>
     </div>

@@ -21,7 +21,7 @@ export function Providers({children}: {children: React.ReactNode;}) {
       <RainbowKitProvider
         chains={myWagmiConfig.chains}
         appInfo={dAppInfo}
-        theme={darkTheme({accentColor: "#f2ae0f", accentColorForeground: "#000"})}
+        theme={darkTheme({accentColor: "#ffe200", accentColorForeground: "#000"})}
         modalSize="compact"
       >
         {mounted && children}

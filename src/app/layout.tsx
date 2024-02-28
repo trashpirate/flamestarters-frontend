@@ -1,30 +1,30 @@
 import "./globals.css";
-import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import { Providers } from "./providers";
+import type {Metadata} from "next";
+import {Inter} from "next/font/google";
+import {Providers} from "./providers";
 
-const inter = Inter({ subsets: ["latin"] });
+const inter = Inter({subsets: ["latin"]});
 
 export const metadata: Metadata = {
   title: process.env.NEXT_PUBLIC_PROJECT_NAME,
-  description: process.env.NEXT_PUBLIC_PROJECT_DESCRIPTION,
+  description: "A collection of 177 unique AI-generated and human-curated pieces designed to ignite the EARNer in you!",
   applicationName: process.env.NEXT_PUBLIC_PROJECT_NAME,
   twitter: {
     card: "summary_large_image",
-    site: "flame.buyholdearn.com",
+    site: "flamestarters.buyholdearn.com",
     creator: "@buyholdearn",
-    images: "https://flame.buyholdearn.com/preview.jpeg",
+    images: "https://flamestarters.buyholdearn.com/featured_image.jpg",
   },
   openGraph: {
     type: "website",
-    url: "https://flame.buyholdearn.com",
-    title: "Flamelings",
+    url: "https://flamestarters.buyholdearn.com",
+    title: "The FlameStarters",
     description:
-      "The adorable Flamelings embody the warmth and energy of the fire they are born from. Funny, powerful, brave, patient, and dependable, they reflect the diverse qualities of the EARN community.",
-    siteName: "Flamelings",
+      "A collection of 177 unique AI-generated and human-curated pieces designed to ignite the EARNer in you!",
+    siteName: "The FlameStarters",
     images: [
       {
-        url: "https://flame.buyholdearn.com/preview.jpeg",
+        url: "https://flamestarters.buyholdearn.com/featured_image.jpg",
       },
     ],
   },

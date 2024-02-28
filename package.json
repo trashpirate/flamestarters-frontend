@@ -10,9 +10,12 @@
   },
   "dependencies": {
     "@headlessui/react": "^1.7.17",
+    "@moralisweb3/common-evm-utils": "^2.25.0",
+    "@moralisweb3/next": "^2.25.0",
     "@rainbow-me/rainbowkit": "^1.3.1",
-    "alchemy-sdk": "^3.1.0",
+    "moralis": "^2.25.0",
     "next": "13.5.4",
+    "next-auth": "^4.24.6",
     "react": "^18",
     "react-dom": "^18",
     "react-spinners": "^0.13.8",
