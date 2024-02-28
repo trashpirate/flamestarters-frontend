@@ -15,7 +15,7 @@ export default function MintInputPanel({
   batchLimit,
   totalSupply
 }: Props) {
-  const remaining = MAX_SUPPLY - Number(totalSupply);
+  const remaining = MAX_SUPPLY - 1 - Number(totalSupply);
   const validBatchLimit = batchLimit ? batchLimit : 5;
   const maxMint = remaining < validBatchLimit ? remaining : validBatchLimit;
   return (
