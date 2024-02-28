@@ -38,7 +38,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-<!-- [![Product Name Screen Shot][product-screenshot]](https://example.com) -->
+![FlameStarters](https://github.com/trashpirate/flamestarters/blob/master/flamestarters.jpg?raw=true)
 
 This repository contains the code for the frontend of a minting dApp for a collection of 177 unique AI-generated and human-curated pieces designed to ignite the EARNer in you! Collect rare characters like flintstone from the earliest days of mankind, or mint a bougie designer lighter. Hidden within the collection are seven legendary pieces that stand apart from all others.
 
