@@ -1,18 +1,12 @@
 "use client";
 import React, {useEffect, useState} from "react";
 import {useAccount, useContractReads, useNetwork} from "wagmi";
-import {readContracts} from '@wagmi/core';
 import {nftABI} from "@/assets/nftABI";
 import Image from "next/image";
 import Link from "next/link";
-import {toHex} from "viem";
 import {readContract} from "wagmi/actions";
-import getWagmiConfig from "@/app/config";
 
 const NFT_CONTRACT = process.env.NEXT_PUBLIC_NFT_CONTRACT as `0x${ string }`;
-const myWagmiConfig = getWagmiConfig(
-  process.env.NEXT_PUBLIC_TESTNET as string,
-);
 
 interface NFTMeta {
   name: string;
