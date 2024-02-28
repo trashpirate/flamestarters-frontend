@@ -99,7 +99,7 @@ export default function Nfts({}: Props) {
         args: [BigInt(counter.toString())]
       });
       if (owner == address) {
-        const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ (counter - 1).toString() }`);
+        const res = await fetch(`https://ipfs.io/ipfs/bafybeid2becus7ppm3nmpgzldkqeegs3hetpjqn7i32ko3eu3imct3ooi4/${ (counter).toString() }`);
         const json = await res.json();
         const [prefix, separator, url, trait, name] = json.image.split("/");
         const imageURL = `https://ipfs.io/ipfs/bafybeihmnzln7owlnyo7s6cjtca66d35s3bl522yfx5tjnn3j7z6ol4aiy/${ trait }/${ name }`;
