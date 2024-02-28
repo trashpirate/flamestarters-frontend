@@ -38,7 +38,7 @@ export default function CollectionInfo({}: Props) {
     if (isLoading) {
       text = "Loading...";
     } else if (isSuccess && totalSupply != undefined) {
-      text = `${ (totalSupply + 1).toLocaleString() }`;
+      text = `${ (totalSupply).toLocaleString() }`;
     } else {
       text = "---";
     }
@@ -50,7 +50,7 @@ export default function CollectionInfo({}: Props) {
     if (isLoading) {
       text = "Loading...";
     } else if (isSuccess && totalSupply != undefined) {
-      text = `${ (177 - 1 - totalSupply).toLocaleString() }`;
+      text = `${ (177 - totalSupply).toLocaleString() }`;
     } else {
       text = "---";
     }
